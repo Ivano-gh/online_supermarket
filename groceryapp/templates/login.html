@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <!-- Add your stylesheet links here -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+</head>
+<body id="login" style="background-image: url('/static/images/oneline2.jpg'); background-size: cover; background-repeat: no-repeat;">
+
+
+    {% include 'navigation.html' %}
+    <hr class="mt-0">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 m-auto">
+                <div class="card mt-5 bg-dark">
+                    <div class="card-title text-center mt-3">
+                        <img src="{% static 'images/adminlogo.png' %}" width="150" height="150" alt="User Avatar">
+                        <h2 class="text-white">User Login</h2>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-user fa-2x"></i>
+                                    </span>
+                                </div>
+                                <input type="text" name="username" class="form-control py-4" placeholder="Email ID" required>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-lock fa-2x"></i>
+                                    </span>
+                                </div>
+                                <input type="password" name="password" class="form-control py-4" placeholder="Password" required>
+                            </div>
+                            
+                            <div class="text-center">
+                                <input type="submit" value="Login" class="btn btn-success px-5">
+                            </div>
+                            <div class="text-center mt-3">
+                                <a href="{% url 'registration' %}" class="text-white">Create Account <i class="fas fa-angle-double-right"></i></a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
