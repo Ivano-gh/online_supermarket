@@ -44,6 +44,7 @@ urlpatterns = [
     path('logout/', logoutuser, name="logout"),
     path('change-password/', change_password, name="change_password"),
     path('user-product/<int:pid>/', user_product, name="user_product"),
+    path('product-detail/<int:pid>/', product_detail, name="product_detail"),
 ]
 
 if settings.DEBUG:
