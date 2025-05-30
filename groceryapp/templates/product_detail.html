@@ -343,39 +343,43 @@
             </div>
             <div class="row">
                 <div class="col-md-12 list-slider mt-4">
-                    <div class="owl-carousel common_wd owl-theme" id="recent_post">
-                        {% for i in latest_product %}
-                        <div class="item">
-                            <div class="sq_box shadow">
-                                <div class="pdis_img">
-                                    {% if i.discount and i.discount|floatformat > 0 %}
-                                    <span class="discount-flag">{{ i.discount }}% OFF</span>
-                                    {% endif %}
-                                    <span class="wishlist">
-                                        <a alt="Add to Wish List" title="Add to Wish List" href="javascript:void(0);">
-                                            <i class="fa fa-heart"></i>
-                                        </a>
-                                    </span>
-                                    <a href="#">
-                                        <img src="{{i.image.url}}" alt="{{i.name}}">
-                                    </a>
-                                </div>
-                                <h4 class="mb-1">
-                                    <a href="details.php">{{i.name}}</a>
-                                </h4>
-                                <div class="price-box mb-2">
-                                    <span class="price">Price <i></i> {{i.price}}</span>
-                                    <span class="offer-price">Offer Price <i class="fa fa-inr"></i> {{i.id|applydiscount}}</span>
-                                </div>
-                                <div class="btn-box text-center">
-                                    <a class="btn btn-sm btn-success" href="javascript:void(0);">
-                                        <i class="fa fa-shopping-cart"></i> Add to Cart
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
+                    <div class="row">
+    {% for i in latest_product %}
+    <div class="col-md-3 col-sm-6 mb-4">
+        <div class="sq_box shadow">
+            <div class="pdis_img">
+                {% if i.discount and i.discount|floatformat > 0 %}
+                <span class="discount-flag">{{ i.discount }}% OFF</span>
+                {% endif %}
+                <span class="wishlist">
+                    <a alt="Add to Wish List" title="Add to Wish List" href="javascript:void(0);">
+                        <i class="fa fa-heart"></i>
+                    </a>
+                </span>
+                <a href="#">
+                    <img src="{{i.image.url}}" alt="{{i.name}}">
+                </a>
+            </div>
+            <h4 class="mb-1">
+                <a href="details.php">{{i.name}}</a>
+            </h4>
+            <div class="price-box mb-2">
+                <span class="price">Price Ghc. <del>{{i.price}}</del>
+                    {% if i.discount and i.discount|floatformat > 0 %}
+                        <span class="badge bg-success ms-2">{{ i.discount }}% OFF</span>
+                    {% endif %}
+                </span>
+                <span class="offer-price">Offer Price Ghc. {{i.id|applydiscount}}</span>
+            </div>
+            <div class="btn-box text-center">
+                <a class="btn btn-sm btn-success" href="javascript:void(0);">
+                    <i class="fa fa-shopping-cart"></i> Add to Cart
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
                 </div>
             </div>
         </div>
