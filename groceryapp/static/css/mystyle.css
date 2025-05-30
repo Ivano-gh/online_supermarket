@@ -71,3 +71,20 @@ img {
   width: 100%; /* Centers images inside containers */
 }
 
+ body {
+        background: #f8f9fa;
+    }
+    .change-password-card {
+    max-width: 700px; /* or 800px */
+    margin: 60px auto 0 auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    background: #fff;
+    padding: 40px 32px;
+}
+    .change-title {
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
+        margin-bottom: 25px;
+    }
+

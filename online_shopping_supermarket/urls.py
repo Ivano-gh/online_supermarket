@@ -39,7 +39,10 @@ urlpatterns = [
     path('delete-product/<int:pid>/', delete_product, name="delete_product"),
     path('registration/', registration, name="registration"),
     path('userlogin/', userlogin, name="userlogin"),
-     path('dashboard/', user_dashboard, name='user_dashboard'),
+    path('dashboard/', user_dashboard, name='user_dashboard'),
+    path('profile/', profile, name="profile"),
+    path('logout/', logoutuser, name="logout"),
+    path('change-password/', change_password, name="change_password"),
 ]
 
 if settings.DEBUG:

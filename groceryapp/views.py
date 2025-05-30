@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from .models import Carousel
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from .models import Category,Product
 from django.contrib.auth.models import User  # For User model  # If UserProfile is in models, add it here too
@@ -162,6 +162,7 @@ def registration(request):
         )
 
         messages.success(request, "Registration Successful")
+        return redirect('userlogin')
     return render(request, 'registration.html', locals())
 
 def userlogin(request):
@@ -176,3 +177,57 @@ def userlogin(request):
         else:
             messages.error(request, "Invalid Credentials")
     return render(request, 'login.html')
+
+@login_required
+def profile(request):
+    # Always get or create the profile for the user
+    data, created = UserProfile.objects.get_or_create(user=request.user)
+    if request.method == "POST":
+        fname = request.POST['fname']
+        lname = request.POST['lname']
+        email = request.POST['email']
+        address = request.POST['address']
+        mobile = request.POST['mobile']
+        try:
+            image = request.FILES['image']
+            data.image = image
+            data.save()
+        except:
+            pass
+        user = User.objects.filter(id=request.user.id).update(first_name=fname, last_name=lname, email=email)
+        UserProfile.objects.filter(id=data.id).update(mobile=mobile, address=address)
+        messages.success(request, "Profile updated")
+        return redirect('user_dashboard')
+    return render(request, 'profile.html', {'data': data})
+
+
+def logoutuser(request):
+    logout(request)
+    messages.success(request, "Logout Successfully")
+    return redirect('main')
+
+from django.contrib.auth import authenticate, login
+
+def change_password(request):
+    if request.method == 'POST':
+        o = request.POST.get('currentpassword')
+        n = request.POST.get('newpassword')
+        c = request.POST.get('confirmpassword')
+        user = authenticate(username=request.user.username, password=o)
+        if user:
+            if n == c:
+                user.set_password(n)
+                user.save()
+                # Re-authenticate and log the user in again
+                user = authenticate(username=request.user.username, password=n)
+                if user:
+                    login(request, user)
+                messages.success(request, "Password Changed")
+                return redirect('user_dashboard')
+            else:
+                messages.error(request, "Password not matching")
+                return redirect('change_password')
+        else:
+            messages.error(request, "Invalid Password")
+            return redirect('change_password')
+    return render(request, 'change_password.html')
