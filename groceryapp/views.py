@@ -231,3 +231,12 @@ def change_password(request):
             messages.error(request, "Invalid Password")
             return redirect('change_password')
     return render(request, 'change_password.html')
+
+def user_product(request,pid):
+    if pid == 0:
+        product = Product.objects.all()
+    else:
+        category = Category.objects.get(id=pid)
+        product = Product.objects.filter(category=category)
+    allcategory = Category.objects.all()
+    return render(request, "user-product.html", locals())
