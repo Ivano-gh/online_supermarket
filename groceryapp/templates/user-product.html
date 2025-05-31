@@ -169,7 +169,7 @@
                     </li>
                      <li class="nav-item"><a href="" class="nav-link">Feedback</a></li>
                       <li class="nav-item"><a href="" class="nav-link">My Order</a></li>
-                <li class="nav-item"><a href="" class="nav-link">My Cart</a></li>
+                 <li class="nav-item"><a href="/cart/" class="nav-link">My Cart</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link " href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
@@ -188,7 +188,8 @@
             </div>
         </div>
     </nav>
-
+    
+{% block content %}
     <!-- Main Content Wrapper -->
     <div class="d-flex" id="wrapper">
         <!-- Sidebar -->
@@ -228,6 +229,7 @@
             </nav>
 
             <!-- Products Section -->
+             
             <div class="container-fluid mt-4">
                 <div class="row">
                     {% for j in product %}
@@ -245,7 +247,7 @@
                                     {{j.description}}
                                 </p>
                                 
-                                <a href="#" class="btn btn-primary">
+                                <a href="/add-to-cart/{{j.id}}/" class="btn btn-primary">
   <i class="fa fa-shopping-cart"></i> Add to cart
 </a>
 <a href="/product-detail/{{j.id}}/" class="btn btn-warning">
@@ -277,7 +279,7 @@
             </div>
         </div>
     </div>
-
+{% endblock %}
     <!-- JavaScript Libraries -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

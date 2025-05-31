@@ -1,11 +1,14 @@
 from django.shortcuts import render,redirect
-from .models import Carousel
+from .models import Carousel,Cart
 from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from .models import Category,Product
 from django.contrib.auth.models import User  # For User model  # If UserProfile is in models, add it here too
 from .models import UserProfile 
 from django.contrib.auth.decorators import login_required
+import json
+
+
 
 
 
@@ -245,3 +248,60 @@ def product_detail(request, pid):
     product = Product.objects.get(id=pid)
     latest_product = Product.objects.filter().exclude(id=pid).order_by('-id')[:10]
     return render(request, "product_detail.html", locals())
+
+
+def addToCart(request, pid):
+    myli = {"objects": []}
+    try:
+        cart = Cart.objects.get(user=request.user)
+        myli = json.loads((str(cart.product)).replace("'", '"'))
+        # Try to update the quantity for this pid
+        if myli['objects']:
+            if str(pid) in myli['objects'][0]:
+                myli['objects'][0][str(pid)] += 1
+            else:
+                myli['objects'][0][str(pid)] = 1
+        else:
+            myli['objects'].append({str(pid): 1})
+        cart.product = json.dumps(myli)
+        cart.save()
+    except Cart.DoesNotExist:
+        myli['objects'].append({str(pid): 1})
+        cart = Cart.objects.create(user=request.user, product=json.dumps(myli))
+    return redirect('cart')
+
+def incredecre(request, pid):
+    cart = Cart.objects.get(user=request.user)
+    if request.GET.get('action') == "incre":
+        myli = json.loads((str(cart.product)).replace("'", '"'))
+        myli['objects'][0][str(pid)] = myli['objects'][0].get(str(pid), 0) + 1
+    if request.GET.get('action') == "decre":
+        myli = json.loads((str(cart.product)).replace("'", '"'))
+        if myli['objects'][0][str(pid)] == 1:
+            del myli['objects'][0][str(pid)]
+        else:
+            myli['objects'][0][str(pid)] = myli['objects'][0].get(str(pid), 0) - 1
+    cart.product = myli
+    cart.save()
+    return redirect('cart')
+
+def cart(request):
+    try:
+        cart = Cart.objects.get(user=request.user)
+        product = (cart.product).replace("'", '"')
+        myli = json.loads(str(product))
+        product = myli['objects'][0]
+    except:
+        product = []
+    lengthpro = len(product)
+    return render(request, 'cart.html', locals())
+
+def deletecart(request, pid):
+    cart = Cart.objects.get(user=request.user)
+    product = (cart.product).replace("'", '"')
+    myli = json.loads(str(product))
+    del myli['objects'][0][str(pid)]
+    cart.product = myli
+    cart.save()
+    messages.success(request, "Delete Successfully")
+    return redirect('cart')

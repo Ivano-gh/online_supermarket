@@ -59,9 +59,12 @@
         }
         
         .my_img {
-            width: 100%;
-            height: auto;
-            object-fit: contain;
+            vertical-align: middle;
+            position: absolute;
+            top: 0;
+             bottom: 0;
+             margin: auto;
+            height: 100%; 
         }
         
         ._product-detail-content {
@@ -315,7 +318,10 @@
                                             <i class="fa fa-shopping-cart"></i> Buy Now
                                         </button>
                                         <button class="btn btn-theme btn-success" tabindex="0">
-                                            <i class="fa fa-shopping-cart"></i> Add to Cart
+    <a href="/add-to-cart/{{product.id}}/" class="btn-theme btn btn-success" tabindex="0">
+        <i class="fa fa-shopping-cart"></i> Add to Cart
+    </a>
+</button>
                                         </button>
                                         <input type="hidden" name="pid" value="18" />
                                         <input type="hidden" name="price" value="850" />
@@ -361,7 +367,7 @@
                 </a>
             </div>
             <h4 class="mb-1">
-                <a href="details.php">{{i.name}}</a>
+                <a href="/product-detail/{{i.id}}/">{{i.name}}</a>
             </h4>
             <div class="price-box mb-2">
                 <span class="price">Price Ghc. <del>{{i.price}}</del>
