@@ -38,7 +38,7 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label>Contact</label>
-                <input type="text" name="mobile" placeholder="Contact Number" required class="form-control" value="{{data.mobile}}">
+               <input type="text" name="mobile" placeholder="Contact Number"  required pattern="^\+?\d{10,15}$" title="Enter a valid contact number (digits only, may start with +)" required class="form-control" value="{{data.mobile}}">
             </div>
         </div>
  

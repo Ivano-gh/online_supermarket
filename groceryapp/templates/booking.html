@@ -1,4 +1,4 @@
-{% load static custom_tags %}{% load static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -143,12 +143,12 @@
             background-color: white;
             box-shadow: 2px 0 5px rgba(0,0,0,0.1);
         }
-    </style>
-</head>
-
+    label{
+        color:black;
+    }
+</style>
 <body>
-    <!-- Navigation Header -->
-    <nav class="navbar navbar-expand-sm navbar-light navbar-custom">
+<nav class="navbar navbar-expand-sm navbar-light navbar-custom">
         <div class="container-fluid">
             <a href="#" class="navbar-brand">
                 <span style="color:red">Online</span>
@@ -185,70 +185,67 @@
         </div>
     </nav>
  
-
-
-
-{% block content %}
-<div class="container-fluid">
-    <div class="container">
-        <h2 style="font-family:roman;font-size:bold">
-            My Cart
-            <a href="/user-product/0/" class="btn btn-warning " style="float:right">Continue Shopping</a>   
-            <a href="/booking/" class="btn btn-info mr-2" style="float:right">Buy Now</a>
-        <h2>
-        <table class="table table-bordered" style="width: 100%">
-            <thead>
-                <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                    <th>Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for i, j in product.items %}
-                <tr>
-                    <td>
-                        <img class="img-thumbnail" src="{{i|productimage}}" alt="product" style="width:100px;height:100px"></a>
-                    </td>
-                    <td><a href="/product-detail/{{i}}/">{{i|productname}}</a></td>
-                    <td>{{i|productprice}}</td>
-                    <td style="width:15%">
-                        <div class="input-group">
-                            <a href="/incredecre/{{i}}/?action=decre" class="btn btn-warning pull-left" id="decrebtn-{{forloop.counter}}">-</a>
-                            <input type="text" class="cart-plus-minus-box" type="text" style="width:30%;border:1px solid grey" id="shop_qty-{{forloop.counter}}" name="qtybutton" value="{{j}}" readonly/>
-                            <a href="/incredecre/{{i}}/?action=incre" class="btn btn-warning pull-right">+</a>
+<hr class="mt-0">
+<div class="card shadow m-5" id="signupform">
+    <div class="card-body">
+        <div class="container-fluid">
+            <h5 class="p-2" style="border-bottom: 2px solid orange;color:green">Confirm Booking Detail</h5>
+            <form method="post" name="booking">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="fname">First Name</label>
+                            <input type="text" name="fname" id="fname" placeholder="Enter First Name" value="{{user.user.first_name}}" readonly class="form-control"
+                                   pattern="[A-Za-z]+">
                         </div>
-                    </td>
-                    <td id="totalprice-{{forloop.counter}}">Ghc. {% producttotalprice i j %}</td>
-                    <td>
-                        <a href="/deletecart/{{i}}/" class="btn btn-danger"><i class="fa fa-trash-alt"></i></a>
-                    </td>
-                </tr>
-                {% endfor %}
-                <tr>
-                    <td colspan="4"></td>
-                    <td colspan="2" id="total-price">Ghc.</td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" name="lname" value="{{user.user.last_name}}" placeholder="Enter Last Name" readonly class="form-control"
+                                   pattern="[A-Za-z]+">
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Email ID</label>
+                            <input type="email" name="email" placeholder="Email Address" value="{{user.user.username}}" readonly required class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="contact">Contact</label>
+                            <input type="text" name="mobile" placeholder="Contact Number" value="{{user.mobile}}" readonly required
+                                   class="form-control">
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Address</label>
+                            <textarea name="address" class="form-control" placeholder="Full Address" readonly>{{user.address}}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Total Price(Ghc.)</label>
+                            <input type="text" name="total" class="form-control" value="{{total}}" readonly>
+                        </div>
+                    </div>
+                </div>
+                <input type="submit" value="Book Now" class="m-2 px-3 btn btn-primary">
+            </form>
+        </div>
     </div>
 </div>
-
-<script>
-    var prolenth = '{{lengthpro}}';
-    var mytotal = 0;
-    for(var i=1; i<=prolenth*1; i++){
-        // Get the text, remove "Ghc. " and parse as float
-        var priceText = document.getElementById('totalprice-'+i).innerHTML.replace('Ghc. ', '').trim();
-        var totalprice = parseFloat(priceText);
-        mytotal += totalprice;
-    }
-    document.getElementById('total-price').innerHTML  = "Ghc. " + mytotal.toFixed(2);
-</script>
-{% endblock %}
+</body>
+</html>
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Popper.js (required for Bootstrap dropdowns) -->
@@ -257,4 +254,3 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </body>
 </html>
-

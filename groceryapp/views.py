@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Carousel,Cart
+from .models import Carousel,Cart,Booking
 from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from .models import Category,Product
@@ -10,7 +10,7 @@ import json
 
 
 
-
+from django.shortcuts import render, redirect 
 
 # Create your views here.
 
@@ -305,3 +305,38 @@ def deletecart(request, pid):
     cart.save()
     messages.success(request, "Delete Successfully")
     return redirect('cart')
+
+def booking(request):
+    user = UserProfile.objects.get(user=request.user)
+    cart = Cart.objects.get(user=request.user)
+    total = 0
+    product_data = (cart.product).replace("'", '"')
+    product_data = json.loads(str(product_data))
+
+    # Check if cart is empty BEFORE accessing [0]
+    if not product_data.get('objects') or not product_data['objects'][0]:
+        messages.error(request, "Cart is empty, Please add product in cart.")
+        return redirect('cart')
+
+    productid = product_data['objects'][0]
+
+    for i, j in productid.items():
+        product = Product.objects.get(id=i)
+        price_str = str(product.price).replace('$', '').replace('Ghc.', '').replace('Rs.', '').replace('€', '').strip()
+        total += float(j) * float(price_str)
+
+    if request.method == "POST":
+        # Double-check cart is not empty before booking
+        if not productid:
+            messages.error(request, "Cart is empty, Please add product in cart.")
+            return redirect('cart')
+        book = Booking.objects.create(user=request.user, product=cart.product, total=total)
+        cart.product = json.dumps({'objects': []})  # Clear cart after booking
+        cart.save()
+        messages.success(request, "Book Order Successfully")
+        return redirect('main')
+    return render(request, "booking.html", locals())
+
+def myOrder(request):
+    order = Booking.objects.filter(user=request.user)
+    return render(request, "my-order.html", locals())

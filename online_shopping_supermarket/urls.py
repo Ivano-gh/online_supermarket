@@ -49,7 +49,8 @@ urlpatterns = [
     path('cart/', cart, name="cart"),
     path('incredecre/<int:pid>/', incredecre, name="incredecre"),
     path('deletecart/<int:pid>/', deletecart, name="deletecart"),
-
+    path('booking/', booking, name="booking"),
+    path('my-order/', myOrder, name="myorder"),
 ]
 
 if settings.DEBUG:

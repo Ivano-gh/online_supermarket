@@ -1,0 +1,44 @@
+{% extends 'userbase.html' %}
+
+
+{% block title %}My Order{% endblock %}
+
+
+
+{% block content %}
+<hr class="mt-0">
+<div class="card shadow m-5" id="myorder">
+    <div class="card-body">
+        <div class="container-fluid">
+            <h3 style="font-family:roman">My Order</h3>
+            <table class="table table-bordered" style="width:100%">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>BookingID</th>
+                    <th>TotalPrice</th>
+                    <th>Status</th>
+                    <th>CreationDate</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for i in order %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.id}}</td>
+                    <td>{{i.total}}</td>
+                    <td><a href="" class="btn btn-primary" title="Track Status">{{i.get_status_display}}</a></td>
+                    <td>{{i.created}}</td>
+                    <td>
+                        <a href="" class="btn btn-success" title="Return Order"><i class="fa fa-refresh"></i></a>
+                        <a href="" class="btn btn-danger" title="Cancel Order"><i class="fa-solid fa-xmark"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
