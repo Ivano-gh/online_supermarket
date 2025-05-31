@@ -6,6 +6,8 @@
 
 
 {% block content %}
+
+
 <hr class="mt-0">
 <div class="card shadow m-5" id="myorder">
     <div class="card-body">
@@ -28,7 +30,7 @@
                     <td>{{forloop.counter}}</td>
                     <td>{{i.id}}</td>
                     <td>{{i.total}}</td>
-                    <td><a href="" class="btn btn-primary" title="Track Status">{{i.get_status_display}}</a></td>
+                    <td><a href="/user-order-track/{{i.id}}/" class="btn btn-primary" title="Track Status">{{i.get_status_display}}</a></td>
                     <td>{{i.created}}</td>
                     <td>
                         <a href="" class="btn btn-success" title="Return Order"><i class="fa fa-refresh"></i></a>

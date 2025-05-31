@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from .models import Carousel,Cart,Booking
 from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
-from .models import Category,Product
+from .models import Category,Product,ORDERSTATUS
 from django.contrib.auth.models import User  # For User model  # If UserProfile is in models, add it here too
 from .models import UserProfile 
 from django.contrib.auth.decorators import login_required
@@ -340,3 +340,9 @@ def booking(request):
 def myOrder(request):
     order = Booking.objects.filter(user=request.user)
     return render(request, "my-order.html", locals())
+
+def user_order_track(request, pid):
+    order = Booking.objects.get(id=pid)
+    orderstatus = ORDERSTATUS
+    order_status_int = int(order.status) 
+    return render(request, "user-order-track.html", locals())

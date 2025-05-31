@@ -1,0 +1,31 @@
+{% extends 'userbase.html' %}
+{% load static %}
+
+{% block title %}My Order Track{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"/>
+<link href="{% static 'css/progress-bar.css' %}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h4>Track Order</h4>
+    <ol class="ProgressBar">
+        {% for status_code, status_label in orderstatus %}
+            <li class="ProgressBar-step
+                {% if status_code < order_status_int %}is-complete{% endif %}
+                {% if status_code == order_status_int %}is-current{% endif %}
+            ">
+                <svg class="ProgressBar-icon" width="24" height="24">
+                    <use xlink:href="#checkmark-bold"/>
+                </svg>
+                <span class="ProgressBar-stepLabel">{{ status_label }}</span>
+            </li>
+        {% endfor %}
+    </ol>
+</div>
+{% endblock %}
+

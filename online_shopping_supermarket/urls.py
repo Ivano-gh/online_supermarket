@@ -51,6 +51,7 @@ urlpatterns = [
     path('deletecart/<int:pid>/', deletecart, name="deletecart"),
     path('booking/', booking, name="booking"),
     path('my-order/', myOrder, name="myorder"),
+    path('user-order-track/<int:pid>/', user_order_track, name="user_order_track")
 ]
 
 if settings.DEBUG:
