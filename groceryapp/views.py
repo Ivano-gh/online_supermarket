@@ -15,7 +15,9 @@ from django.shortcuts import render, redirect
 # Create your views here.
 
 def home(request):
-    return render(request,'home.html')
+    data = Carousel.objects.all()
+    dic = {'data': data}
+    return render(request, 'index.html', dic)
 
 
 @login_required
@@ -240,11 +242,12 @@ def change_password(request):
                 if user:
                     login(request, user)
                 messages.success(request, "Password Changed")
-                return redirect('user_dashboard')
+                return redirect('userlogin')
             else:
                 messages.error(request, "Password not matching")
                 return redirect('change_password')
         else:
+            
             messages.error(request, "Invalid Password")
             return redirect('change_password')
     return render(request, 'change_password.html')
