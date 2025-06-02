@@ -17,6 +17,14 @@
     text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
   }
 }
+@-moz-keyframes glow {
+  from {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+  }
+  to {
+    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+  }
+}
 @keyframes glow {
   from {
     text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
@@ -25,88 +33,146 @@
     text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
   }
 }
-
-/* Rounded border */
 hr.rounded {
-  border-top: 8px solid lightblue;
+  border-top: 8px solid rgba(255, 255, 255, 0.3);
   border-radius: 5px;
 }
 </style>
-<div class="row">
-    <div class="col-sm-3 p-2">
-        <div class="card shadow bg-dark">
-            <div class="card-body">
-                <h4 class="text-light">Total Users</h4>
-                <h5 style="color : #F1948A">121</h5>
-            </div>
-            <div class="card-footer">
-                <a href="" class="text-warning">View Details >></a>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-3 p-2">
-        <div class="card shadow bg-dark">
-            <div class="card-body">
-                <h4 class="text-light">Total Products</h4>
-                <h5 style="color : #F1948A">112</h5>
-            </div>
-            <div class="card-footer">
-                <a href="" class="text-warning">View Details >></a>
+
+<div class="mt-4">
+    <h1 class="glow mb-4">Admin Dashboard</h1>
+    <hr class="rounded">
+    <div class="row">
+        <div class="col-sm-3 p-2">
+            <div class="card shadow bg-dark">
+                <div class="card-body">
+                    <h4 class="text-light">Total Users</h4>
+                    <h5 style="color : #F1948A">{{user.count}}</h5>
+                </div>
+                <div class="card-footer">
+                    <a href="/manage-user/" class="text-warning">View Details >></a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-sm-3 p-2">
-        <div class="card shadow bg-dark">
-            <div class="card-body">
-                <h4 class="text-light">Total Category</h4>
-                <h5 style="color : #F1948A">231</h5>
-            </div>
-            <div class="card-footer">
-                <a href="" class="text-warning">View Details >></a>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-3 p-2">
-        <div class="card shadow bg-dark">
-            <div class="card-body">
-                <h4 class="text-light">New Order</h4>
-                <h5 style="color : #F1948A"> 111</h5>
-            </div>
-            <div class="card-footer">
-                <a href="" class="text-warning">View Details >></a>
+        <div class="col-sm-3 p-2">
+            <div class="card shadow bg-dark">
+                <div class="card-body">
+                    <h4 class="text-light">Total Products</h4>
+                    <h5 style="color : #F1948A">{{product.count}}</h5>
+                </div>
+                <div class="card-footer">
+                    <a href="/view-product/" class="text-warning">View Details >></a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-sm-4 p-2">
-        <div class="card shadow bg-dark">
-            <div class="card-body">
-                <h4 class="text-light">Total Order</h4>
-                <h5 style="color : #F1948A"> 243</h5>
-            </div>
-            <div class="card-footer">
-                <a href="" class="text-warning">View Details >></a>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-4 p-2">
-        <div class="card shadow bg-dark">
-            <div class="card-body">
-                <h4 class="text-light">Total Feedback</h4>
-                <h5 style="color : #F1948A"> 1223</h5>
-            </div>
-            <div class="card-footer">
-                <a href="" class="text-warning">View Details >></a>
+        <div class="col-sm-3 p-2">
+            <div class="card shadow bg-dark">
+                <div class="card-body">
+                    <h4 class="text-light">Total Category</h4>
+                    <h5 style="color : #F1948A">{{category.count}}</h5>
+                </div>
+                <div class="card-footer">
+                    <a href="/view-category/" class="text-warning">View Details >></a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-sm-4 p-2">
-        <div class="card shadow bg-dark">
-            <div class="card-body">
-                <h4 class="text-light">Total Reviews</h4>
-                <h5 style="color : #F1948A"> 1134</h5>
+        <div class="col-sm-3 p-2">
+            <div class="card shadow bg-dark">
+                <div class="card-body">
+                    <h4 class="text-light">New Order</h4>
+                    <h5 style="color : #F1948A"> {{new_order.count}}</h5>
+                </div>
+                <div class="card-footer">
+                    <a href="/manage-order/?action=1" class="text-warning">View Details >></a>
+                </div>
             </div>
-            <div class="card-footer">
-                <a href="" class="text-warning">View Details >></a>
+        </div>
+        <div class="col-sm-3 p-2">
+            <div class="card shadow bg-dark">
+                <div class="card-body">
+                    <h4 class="text-light">Dispatch Order</h4>
+                    <h5 style="color : #F1948A"> {{dispatch_order.count}}</h5>
+                </div>
+                <div class="card-footer">
+                    <a href="/manage-order/?action=2" class="text-warning">View Details >></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 p-2">
+            <div class="card shadow bg-dark">
+                <div class="card-body">
+                    <h4 class="text-light">On The Way Order</h4>
+                    <h5 style="color : #F1948A">{{way_order.count}}</h5>
+                </div>
+                <div class="card-footer">
+                    <a href="/manage-order/?action=3" class="text-warning">View Details >></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 p-2">
+            <div class="card shadow bg-dark">
+                <div class="card-body">
+                    <h4 class="text-light">Delivered Order</h4>
+                    <h5 style="color : #F1948A"> {{deliver_order.count}}</h5>
+                </div>
+                <div class="card-footer">
+                    <a href="/manage-order/?action=4" class="text-warning">View Details >></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 p-2">
+            <div class="card shadow bg-dark">
+                <div class="card-body">
+                    <h4 class="text-light">Cancel Order</h4>
+                    <h5 style="color : #F1948A">{{cancel_order.count}}</h5>
+                </div>
+                <div class="card-footer">
+                    <a href="/manage-order/?action=5" class="text-warning">View Details >></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 p-2">
+            <div class="card shadow bg-dark">
+                <div class="card-body">
+                    <h4 class="text-light">Return Order</h4>
+                    <h5 style="color : #F1948A">{{return_order.count}}</h5>
+                </div>
+                <div class="card-footer">
+                    <a href="/manage-order/?action=6" class="text-warning">View Details >></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 p-2">
+            <div class="card shadow bg-dark">
+                <div class="card-body">
+                    <h4 class="text-light">Total Order</h4>
+                    <h5 style="color : #F1948A"> {{order.count}}</h5>
+                </div>
+                <div class="card-footer">
+                    <a href="/manage-order/?action=0" class="text-warning">View Details >></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 p-2">
+            <div class="card shadow bg-dark">
+                <div class="card-body">
+                    <h4 class="text-light">Read Feedback</h4>
+                    <h5 style="color : #F1948A"> {{read_feedback.count}}</h5>
+                </div>
+                <div class="card-footer">
+                    <a href="/manage-feedback/?action=1" class="text-warning">View Details >></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 p-2">
+            <div class="card shadow bg-dark">
+                <div class="card-body">
+                    <h4 class="text-light">Unread Feedback</h4>
+                    <h5 style="color : #F1948A"> {{unread_feedback.count}}</h5>
+                </div>
+                <div class="card-footer">
+                    <a href="/manage-feedback/?action=2" class="text-warning">View Details >></a>
+                </div>
             </div>
         </div>
     </div>

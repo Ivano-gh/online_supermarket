@@ -1,0 +1,46 @@
+{% extends 'admin_base.html' %}
+{% block main %}
+{% load static %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<div class="card shadow">
+    <div class="card-body">
+        <h5 class="p-2" style="border-bottom: 2px solid orange;">All Registered User</h5>
+        <div class="container-fluid">
+            <table class="table table-bordered table-sm" id="example">
+                <thead>
+                <tr>
+                    <th>S.No.</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for i in user %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>
+                        {% if i.image %}
+                            <img src="{{i.image.url}}" style="width:80px;height:80px"/>
+                        {% else %}
+                            <img src="{% static 'default-user.png' %}" style="width:80px;height:80px"/>
+                        {% endif %}
+                    </td>
+                    <td>{{i.user.first_name}} {{i.user.last_name}}</td>
+                    <td>{{i.user.username}}</td>
+                    <td>{{i.mobile}}</td>
+                    <td>
+                        <a href="/delete-user/{{i.user.id}}/" class="btn btn-danger"
+                           onclick="return confirm('Are You Sure?')">
+                            <i class="fas  fa-trash-alt"></i>
+                        </a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

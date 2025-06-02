@@ -51,7 +51,22 @@ urlpatterns = [
     path('deletecart/<int:pid>/', deletecart, name="deletecart"),
     path('booking/', booking, name="booking"),
     path('my-order/', myOrder, name="myorder"),
-    path('user-order-track/<int:pid>/', user_order_track, name="user_order_track")
+    path('user-order-track/<int:pid>/', user_order_track, name="user_order_track"),
+    path('change-order-status/<int:pid>/', change_order_status, name="change_order_status"),
+    path('user-feedback/', user_feedback, name="user_feedback"),
+    path('manage-feedback/', manage_feedback, name="manage_feedback"),
+    path('delete-feedback/<int:pid>/', delete_feedback, name="delete_feedback"),
+    path('payment/', payment, name="payment"), 
+    path('payment/verify/',verify_payment, name='verify_payment'),
+    path('manage-order/', manage_order, name="manage_order"),
+    path('delete-order/<int:pid>/', delete_order, name="delete_order"), 
+    path('admin-order-track/<int:pid>/', admin_order_track, name="admin_order_track"),
+    path('manage-user/', manage_user, name="manage_user"),
+    path('delete-user/<int:pid>/', delete_user, name="delete_user"),
+    path('admin-change-password/',admin_change_password, name="admin_change_password"),
+    path('mark-feedback-read/<int:pid>/', mark_feedback_read, name='mark_feedback_read'),
+    path('contact/', contact, name="contact"),
+    
 ]
 
 if settings.DEBUG:

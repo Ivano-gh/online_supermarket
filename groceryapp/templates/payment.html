@@ -1,0 +1,103 @@
+<html>
+{% load static %}
+<head>
+    <title>Payment Page|Online Grocery</title>
+    <link rel="stylesheet" href="{% static 'css/payment.css' %}"/>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+</head>
+<body>
+  <main class="container">
+    <div class="main">
+      <!-- Payment Method Section  -->
+      <section class="payment_method">
+        <h2 class="ship_head">Payment Method</h2>
+        <div class="card_info">
+          <form action="" method="post">
+            {% csrf_token %}
+          <div class="card_head">
+            <h2 class="card_title">Debit or Credit Card</h2>
+          </div>
+          <div class="card_types">
+            <img class="card_img" src="https://cdn-icons-png.flaticon.com/512/349/349221.png" alt="" />
+            <img class="card_img" src="https://cdn-icons-png.flaticon.com/512/349/349230.png" alt="" />
+            <img class="card_img" src="https://cdn-icons-png.flaticon.com/512/349/349228.png" alt="" />
+            <img class="card_img" src="https://img.icons8.com/fluency/512/mastercard.png" alt="" />
+          </div>
+            <input type="text" name="holder_name" value="" placeholder="Card Holder" maxlength="60" />
+            <input type="text" name="number" value="" placeholder="Card Number" maxlength="16" />
+            <div>
+              <input type="text" name="expiry" value="" placeholder="Expire" maxlength="5" />
+              <input type="text" name="cvc" value="" placeholder="CVC" maxlength="3" />
+            </div>
+            </form>
+          <span class="save_card">Save Card</span>
+            <button type="button" class="confirm_btn" onclick="payWithPaystack()">Pay with Paystack</button>
+        
+        </div>
+        <div class="e_payment">
+          <div class="pay">
+            <img src="https://cdn-icons-png.flaticon.com/512/6124/6124998.png" alt="" />
+          </div>
+          <div class="pay">
+            <img src="https://cdn-icons-png.flaticon.com/512/5977/5977576.png" alt="" />
+          </div>
+          <div class="pay">
+            <img src="https://cdn-icons-png.flaticon.com/512/196/196565.png" alt="" />
+          </div>
+        </div>
+
+      </section>
+      <!-- Order Summary Section  -->
+      <section class="order_summary">
+        <h2 class="order_head">Order Summary</h2>
+        <div class="order_price">
+          <hr />
+          <div class="price">
+            <p>Order price:</p>
+            <p>Ghc.{{total}}</p>
+          </div>
+          <div class="price">
+            <p>Shipping:</p>
+            <p>0.00</p>
+          </div>
+          <div class="price">
+            <p>Tax:</p>
+            <p>0.00</p>
+          </div>
+          <br />
+          <hr />
+          <div class="total_price">
+            <p class="dark">Total:</p>
+            <p class="dark">Ghc. {{total}}</p>
+          </div>
+        </div>
+        <img class="qr_code" src="https://cdn-icons-png.flaticon.com/512/714/714390.png" alt="" />
+        <p class="condition">
+          Pay and Confirm Order by QR Code Using <b>Mobile Application</b>
+        </p>
+        
+      </section>
+    </div>
+  </main>
+  <script>
+function payWithPaystack() {
+   
+    var handler = PaystackPop.setup({
+        key: '{{ PAYSTACK_PUBLIC_KEY }}',
+        email: '{{ user.user.email }}',
+        amount: parseFloat('{{ total }}') * 100,
+        currency: "GHS",
+        ref: ''+Math.floor((Math.random() * 1000000000) + 1),
+        callback: function(response){
+            window.location.href = "/payment/verify/?reference=" + response.reference + "&total={{ total }}";
+        },
+        onClose: function(){
+            alert('Payment window closed');
+        }
+    });
+    handler.openIframe();
+}
+</script>
+</body>
+
+</html>

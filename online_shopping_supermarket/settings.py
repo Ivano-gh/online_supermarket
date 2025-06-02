@@ -126,3 +126,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = Path.joinpath(BASE_DIR, 'media')
+
+PAYSTACK_PUBLIC_KEY = 'pk_test_41ff862db39516261978bc33b472fb7fc40de80d'
+PAYSTACK_SECRET_KEY = 'sk_test_3ecfad06cacc0baf2df2d0ff1fd6ff3f73e8948b'

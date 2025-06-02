@@ -102,6 +102,9 @@
         
         ._p-add-cart {
             margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         
         ._p-qty {
@@ -152,8 +155,7 @@
             margin-bottom: 10px;
         }
         
-        .buy-btn, .btn-success {
-            margin-right: 10px;
+        .buy-btn, .btn-success, .btn-warning {
             padding: 10px 20px;
             font-weight: 500;
         }
@@ -245,7 +247,7 @@
                 margin-top: 20px;
             }
             
-            .buy-btn, .btn-success {
+            .buy-btn, .btn-success, .btn-warning {
                 width: 100%;
                 margin-bottom: 10px;
             }
@@ -279,6 +281,9 @@
                 <div class="col-md-6 _boxzoom">
                     <div class="_product-images">
                         <div class="picZoomer">
+                            {% if product.discount and product.discount|floatformat > 0 %}
+                            <span class="discount-flag">{{ product.discount }}% OFF</span>
+                            {% endif %}
                             <img class="my_img" src="{{product.image.url}}" alt="{{product.name}}">
                         </div>
                     </div>
@@ -290,47 +295,42 @@
                         <p class="_p-name product-name">{{product.name}}</p>
                         <div class="_p-price-box">
                            <div class="p-list">
-    <span>
-        Marked Price: Ghc. <del>{{ product.price }}</del>
-        {% if product.discount and product.discount|floatformat > 0 %}
-            <span class="badge bg-success ms-2">{{ product.discount }}% OFF</span>
-        {% endif %}
-    </span>
-    <span class="price">Ghc. {{ product.id|applydiscount }}</span>
-</div>
-                            <div class="_p-add-cart">
-                                <div class="_p-qty">
-                                    <span>Add Quantity</span>
-                                    <div class="value-button decrease_" id="" value="Decrease Value">-</div>
-                                    <input type="number" name="qty" id="number" value="1" />
-                                    <div class="value-button increase_" id="" value="Increase Value">+</div>
-                                </div>
+                                <span>
+                                    Marked Price: Ghc. <del>{{ product.price }}</del>
+                                    {% if product.discount and product.discount|floatformat > 0 %}
+                                        <span class="badge bg-success ms-2">{{ product.discount }}% OFF</span>
+                                    {% endif %}
+                                </span>
+                                <span class="price">Ghc. {{ product.id|applydiscount }}</span>
                             </div>
-                            <div class="_p-features">
-                                <span>Description About this product:</span>
-                                {{product.description}}                    
-                            </div>
-                            <form action="" method="post" accept-charset="utf-8">
-                                <ul class="spe_ul"></ul>
-                                <div class="_p-qty-and-cart">
-                                    <div class="_p-add-cart">
-                                        <button class="btn btn-theme btn-primary buy-btn" tabindex="0">
-                                            <a href="/add-to-cart/{{product.id}}/" class="btn-theme btn btn-success" tabindex="0"></a>
-                                            <i class="fa fa-shopping-cart"></i> Buy Now
-                                        </button>
-                                        <button class="btn btn-theme btn-success" tabindex="0">
-    <a href="/add-to-cart/{{product.id}}/" class="btn-theme btn btn-success" tabindex="0">
-        <i class="fa fa-shopping-cart"></i> Add to Cart
-    </a>
-</button>
-                                        </button>
-                                        <input type="hidden" name="pid" value="18" />
-                                        <input type="hidden" name="price" value="850" />
-                                        <input type="hidden" name="url" value="" />   
-                                    </div>
-                                </div>
-                            </form>
                         </div>
+                        <div class="_p-features">
+                            <span>Description About this product:</span>
+                            {{product.description}}                    
+                        </div>
+                        <!-- Removed Add Quantity and Buy Now buttons -->
+                        <form action="" method="post" accept-charset="utf-8">
+                            <ul class="spe_ul"></ul>
+                            <div class="_p-qty-and-cart">
+                                <div class="_p-add-cart">
+                                    <button class="btn btn-theme btn-success" tabindex="0">
+                                        <a href="/add-to-cart/{{product.id}}/" class="btn-theme btn btn-success" tabindex="0">
+                                            <i class="fa fa-shopping-cart"></i> Add to Cart
+                                        </a>
+                                    </button>
+                                    
+                                    <button class="btn btn-theme btn-warning" tabindex="0">
+                                        <a href="/apply-discount/{{product.id}}/" class="btn-theme btn btn-warning" tabindex="0">
+                                            <i class="fa fa-tag"></i> Apply Discount
+                                        </a>
+                                    </button>
+                                    
+                                    <input type="hidden" name="pid" value="18" />
+                                    <input type="hidden" name="price" value="850" />
+                                    <input type="hidden" name="url" value="" />   
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -351,42 +351,42 @@
             <div class="row">
                 <div class="col-md-12 list-slider mt-4">
                     <div class="row">
-    {% for i in latest_product %}
-    <div class="col-md-3 col-sm-6 mb-4">
-        <div class="sq_box shadow">
-            <div class="pdis_img">
-                {% if i.discount and i.discount|floatformat > 0 %}
-                <span class="discount-flag">{{ i.discount }}% OFF</span>
-                {% endif %}
-                <span class="wishlist">
-                    <a alt="Add to Wish List" title="Add to Wish List" href="javascript:void(0);">
-                        <i class="fa fa-heart"></i>
-                    </a>
-                </span>
-                <a href="#">
-                    <img src="{{i.image.url}}" alt="{{i.name}}">
-                </a>
-            </div>
-            <h4 class="mb-1">
-                <a href="/product-detail/{{i.id}}/">{{i.name}}</a>
-            </h4>
-            <div class="price-box mb-2">
-                <span class="price">Price Ghc. <del>{{i.price}}</del>
-                    {% if i.discount and i.discount|floatformat > 0 %}
-                        <span class="badge bg-success ms-2">{{ i.discount }}% OFF</span>
-                    {% endif %}
-                </span>
-                <span class="offer-price">Offer Price Ghc. {{i.id|applydiscount}}</span>
-            </div>
-            <div class="btn-box text-center">
-                <a class="btn btn-sm btn-success" href="javascript:void(0);">
-                    <i class="fa fa-shopping-cart"></i> Add to Cart
-                </a>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
-</div>
+                        {% for i in latest_product %}
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="sq_box shadow">
+                                <div class="pdis_img">
+                                    {% if i.discount and i.discount|floatformat > 0 %}
+                                    <span class="discount-flag">{{ i.discount }}% OFF</span>
+                                    {% endif %}
+                                    <span class="wishlist">
+                                        <a alt="Add to Wish List" title="Add to Wish List" href="javascript:void(0);">
+                                            <i class="fa fa-heart"></i>
+                                        </a>
+                                    </span>
+                                    <a href="#">
+                                        <img src="{{i.image.url}}" alt="{{i.name}}">
+                                    </a>
+                                </div>
+                                <h4 class="mb-1">
+                                    <a href="/product-detail/{{i.id}}/">{{i.name}}</a>
+                                </h4>
+                                <div class="price-box mb-2">
+                                    <span class="price">Price Ghc. <del>{{i.price}}</del>
+                                        {% if i.discount and i.discount|floatformat > 0 %}
+                                            <span class="badge bg-success ms-2">{{ i.discount }}% OFF</span>
+                                        {% endif %}
+                                    </span>
+                                    <span class="offer-price">Offer Price Ghc. {{i.id|applydiscount}}</span>
+                                </div>
+                                <div class="btn-box text-center">
+                                    <a class="btn btn-sm btn-success" href="javascript:void(0);">
+                                        <i class="fa fa-shopping-cart"></i> Add to Cart
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>

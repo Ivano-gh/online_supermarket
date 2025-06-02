@@ -11,8 +11,44 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h4>Track Order</h4>
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        Track Order Status
+                    </h4>
+                    <p class="card-description">Dashboard <code>order-status</code></p>
+                    <hr/>
+                    <div class="table-responsive">
+                        <div class="wrapper">
+                            <div id="mymsg" style="display:none">
+                                <div class="alert alert-success"
+                                    id="alert"
+                                    role="alert"
+                                    style="cursor: pointer; opacity: 0.85">
+                                <button
+                                type="button"
+                                class="close"
+                                data-dismiss="alert"
+                                aria-label="Close"
+                                ><span aria-hidden="true">&times;</span>
+                                </button>
+                                    <strong>Success!</strong><span id="msg-track"></span>
+                                    <div
+                                        class="progress active"
+                                        role="progressbar"
+                                        style="height: 5px"
+                                    >
+                                        <div
+                                            class="progress-bar bg-success"
+                                            id="pb"
+                                            style="width: 100%; opacity: 0.5"
+                                        ></div>
+                                    </div>
+                                </div>
+                            </div>    <h4>Track Order</h4>
     <ol class="ProgressBar">
         {% for status_code, status_label in orderstatus %}
             <li class="ProgressBar-step

@@ -1,5 +1,394 @@
-{% extends 'navigation.html'  %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Online Shopping Supermarket</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
+    
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .about-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .hero-section h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .hero-section p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .content-column {
+            padding: 40px 0;
+        }
+        
+        .sec-title {
+            margin-bottom: 30px;
+        }
+        
+        .sec-title .title {
+            color: #667eea;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .sec-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            color: #555;
+        }
+        
+        .image-column {
+            padding: 40px 0;
+        }
+        
+        .inner-column {
+            position: relative;
+        }
+        
+        .author-desc {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .author-desc h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .author-desc span {
+            color: #667eea;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        
+        .image-1 {
+            text-align: center;
+            margin: 0;
+        }
+        
+        .image-1 img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .image-1 img:hover {
+            transform: translateY(-10px);
+        }
+        
+        .btn-box {
+            margin-top: 30px;
+        }
+        
+        .theme-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .theme-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .features-section {
+            background: white;
+            padding: 80px 0;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+            height: 100%;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h4 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .mission-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+        }
+        
+        .mission-section .sec-title .title {
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .mission-section .sec-title h2 {
+            color: white;
+        }
+        
+        .mission-section .text {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+            
+            .sec-title h2 {
+                font-size: 2rem;
+            }
+            
+            .content-column {
+                padding: 20px 0;
+            }
+            
+            .image-column {
+                padding: 20px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% include 'navigation.html' %}
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1>About Us</h1>
+                    <p>Your trusted partner in online shopping since 2025</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-{% block body %}
-<h1>This is the about page</h1>
-{% endblock %}
+    <!-- Main About Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="content-column col-lg-6 col-md-12 col-sm-12 order-2 order-lg-1">
+                    <div class="inner-column">
+                        <div class="sec-title">
+                            <span class="title">About Online Shopping Supermarket</span>
+                            <h2>We are Creative Tech Enthusiasts working since 2025</h2>
+                        </div>
+                        <div class="text">
+                            I am M.D Botchway Ivan, the managing director of this Company. We believe in making your life easier by bringing your favorite products right to your fingertips. Whether you're stocking up on household essentials, shopping for fresh groceries, or treating yourself to something special, we've got you covered.
+                        </div>
+                        <div class="text">
+                            We are here to serve you and provide you with quality goods and services that exceed your expectations.
+                        </div>
+                        <div class="btn-box">
+                            <a href="#contact" class="theme-btn btn-style-one">
+                                <i class="fas fa-phone me-2"></i>Contact Us
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Image Column -->
+                <div class="image-column col-lg-6 col-md-12 col-sm-12 order-1 order-lg-2">
+                    <div class="inner-column">
+                        <div class="author-desc">
+                            <h2>M.D Botchway Ivan</h2>
+                            <span>Managing Director</span>
+                        </div>
+                        <figure class="image-1">
+                            <a href="#" class="lightbox-image" data-fancybox="images">
+                                <img title="M.D Botchway Ivan" src="{% static 'images/about.png' %}" alt="Managing Director">
+                            </a>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <div class="sec-title">
+                        <span class="title">Why Choose Us</span>
+                        <h2>What Makes Us Different</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shipping-fast"></i>
+                        </div>
+                        <h4>Convenience at Its Best</h4>
+                        <p>Shop anytime, anywhere, and have your items delivered straight to your doorstep.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <h4>Wide Range of Products</h4>
+                        <p>From fresh produce to electronics, we cater to all your needs under one virtual roof.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <h4>Unbeatable Prices</h4>
+                        <p>Enjoy competitive pricing and exciting discounts on top-quality products.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <h4>Fast & Reliable Delivery</h4>
+                        <p>Our efficient delivery team ensures your orders arrive promptly and in perfect condition.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <div class="sec-title">
+                        <span class="title">Our Mission</span>
+                        <h2>Revolutionizing Your Shopping Experience</h2>
+                    </div>
+                    <div class="text">
+                        We aim to revolutionize the way you shop by combining convenience, quality, and affordability. We are committed to providing a seamless shopping experience tailored to your busy lifestyle.
+                    </div>
+                    <div class="text">
+                        Thank you for choosing us as your shopping partner. We're excited to serve you and make your shopping experience delightful!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Future Goals Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <div class="sec-title">
+                        <span class="title">Our Future Goal</span>
+                        <h2>Leading in Innovation & Technology</h2>
+                    </div>
+                    <div class="text">
+                        We want to lead in innovation & technology by bringing our products to your doorsteps with cutting-edge solutions and exceptional service quality.
+                    </div>
+                    <div class="text">
+                        In the end, I would say keep visiting our website and enjoy the quality content and services we provide.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

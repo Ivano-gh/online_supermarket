@@ -167,7 +167,7 @@
                             <i class="fas fa-shopping-cart"></i> Cart
                         </a>
                     </li>
-                     <li class="nav-item"><a href="" class="nav-link">Feedback</a></li>
+                     <li class="nav-item"><a href="/user-feedback/" class="nav-link">Feedback</a></li>
                      <li class="nav-item"><a href="/my-order/" class="nav-link">My Order</a></li>
                  <li class="nav-item"><a href="/cart/" class="nav-link">My Cart</a></li>
                 <li class="nav-item dropdown">
@@ -221,19 +221,23 @@
                     <i class="fa fa-bars"></i>
                 </button>
                 
-                <div class="category-header ml-3 flex-grow-1">
-                    <h4 class="mb-0">
-                        <i class="fas fa-eye"></i> View {{category.name}} Products
-                    </h4>
-                </div>
+                <!-- Removed the eye icon and category header div -->
             </nav>
 
+            <!-- Search Bar -->
+            <div class="container mt-3">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <input type="text" id="productSearch" class="form-control" placeholder="Search products...">
+        </div>
+    </div>
+</div>
+
             <!-- Products Section -->
-             
             <div class="container-fluid mt-4">
                 <div class="row">
                     {% for j in product %}
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 product-item">
                         <div class="card product-card h-100">
                             <img class="card-img-top product-image" 
                                  src="{{j.image.url}}" 
@@ -344,6 +348,15 @@
                 });
             });
         });
+
+        // Product search filter
+    document.getElementById('productSearch').addEventListener('keyup', function() {
+        var searchValue = this.value.toLowerCase();
+        document.querySelectorAll('.product-item').forEach(function(card) {
+            var text = card.textContent.toLowerCase();
+            card.style.display = text.includes(searchValue) ? '' : 'none';
+        });
+    });
     </script>
 </body>
 </html>

@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from .models import Carousel,Cart,Booking
 from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
-from .models import Category,Product,ORDERSTATUS
+from .models import Category,Product,ORDERSTATUS,Feedback
 from django.contrib.auth.models import User  # For User model  # If UserProfile is in models, add it here too
 from .models import UserProfile 
 from django.contrib.auth.decorators import login_required
@@ -28,6 +28,9 @@ def index(request):
 
 def about(request):
     return render(request,'about.html')
+
+def contact(request):
+    return render(request, 'contact.html')
 
 def main(request):
     data = Carousel.objects.all()
@@ -56,8 +59,19 @@ def adminHome(request):
     return render(request, 'admin_base.html')
 
 def admin_dashboard(request):
-    return render(request, 'admin_dashboard.html')
-
+    user = UserProfile.objects.filter()
+    category = Category.objects.filter()
+    product = Product.objects.filter()
+    new_order = Booking.objects.filter(status=1)
+    dispatch_order = Booking.objects.filter(status=2)
+    way_order = Booking.objects.filter(status=3)
+    deliver_order = Booking.objects.filter(status=4)
+    cancel_order = Booking.objects.filter(status=5)
+    return_order = Booking.objects.filter(status=6)
+    order = Booking.objects.filter()
+    read_feedback = Feedback.objects.filter(status=1)
+    unread_feedback = Feedback.objects.filter(status=2)
+    return render(request, 'admin_dashboard.html', locals())
 
 def add_category(request):
     if request.method == "POST":
@@ -306,36 +320,42 @@ def deletecart(request, pid):
     messages.success(request, "Delete Successfully")
     return redirect('cart')
 
+@login_required
 def booking(request):
     user = UserProfile.objects.get(user=request.user)
-    cart = Cart.objects.get(user=request.user)
-    total = 0
-    product_data = (cart.product).replace("'", '"')
-    product_data = json.loads(str(product_data))
-
-    # Check if cart is empty BEFORE accessing [0]
-    if not product_data.get('objects') or not product_data['objects'][0]:
+    try:
+        cart = Cart.objects.get(user=request.user)
+        product_data = (cart.product).replace("'", '"')
+        product_data = json.loads(str(product_data))
+        productid = product_data.get('objects', [{}])[0]
+    except (Cart.DoesNotExist, IndexError, KeyError, ValueError, TypeError):
         messages.error(request, "Cart is empty, Please add product in cart.")
         return redirect('cart')
 
-    productid = product_data['objects'][0]
+    if not productid:
+        messages.error(request, "Cart is empty, Please add product in cart.")
+        return redirect('cart')
 
+    total = 0
     for i, j in productid.items():
-        product = Product.objects.get(id=i)
-        price_str = str(product.price).replace('$', '').replace('Ghc.', '').replace('Rs.', '').replace('€', '').strip()
-        total += float(j) * float(price_str)
+        try:
+            product = Product.objects.get(id=i)
+            # Remove any currency symbols and convert to float
+            price_str = str(product.price).replace('$', '').replace('Ghc.', '').replace('Rs.', '').replace('€', '').strip()
+            total += float(j) * float(price_str)
+        except Product.DoesNotExist:
+            continue
 
     if request.method == "POST":
-        # Double-check cart is not empty before booking
-        if not productid:
-            messages.error(request, "Cart is empty, Please add product in cart.")
-            return redirect('cart')
-        book = Booking.objects.create(user=request.user, product=cart.product, total=total)
-        cart.product = json.dumps({'objects': []})  # Clear cart after booking
-        cart.save()
-        messages.success(request, "Book Order Successfully")
-        return redirect('main')
-    return render(request, "booking.html", locals())
+        return redirect(f'/payment/?total={total}')
+
+    return render(request, "booking.html", {
+        "user": user,
+        "cart": cart,
+        "total": total,
+        "productid": productid,
+    })
+
 
 def myOrder(request):
     order = Booking.objects.filter(user=request.user)
@@ -346,3 +366,138 @@ def user_order_track(request, pid):
     orderstatus = ORDERSTATUS
     order_status_int = int(order.status) 
     return render(request, "user-order-track.html", locals())
+
+def change_order_status(request, pid):
+    order = Booking.objects.get(id=pid)
+    status = request.GET.get('status')
+    if status:
+        order.status = status
+        order.save()
+        messages.success(request, "Order status changed.")
+    return redirect('myorder')
+
+def user_feedback(request):
+    user = UserProfile.objects.get(user=request.user)
+    if request.method == "POST":
+        Feedback.objects.create(user=request.user, message=request.POST['feedback'])
+        messages.success(request, "Feedback sent successfully")
+    return render(request, "feedback-form.html", locals())
+
+def manage_feedback(request):
+    action = request.GET.get('action', 0)
+    feedback = Feedback.objects.filter(status=int(action))
+    return render(request, 'manage_feedback.html', locals())
+
+def delete_feedback(request, pid):
+    feedback = Feedback.objects.get(id=pid)
+    feedback.delete()
+    messages.success(request, "Deleted successfully")
+    return redirect('manage_feedback')
+
+
+def mark_feedback_read(request, pid):
+    feedback = Feedback.objects.get(id=pid)
+    feedback.status = 1  # 1 means "Read"
+    feedback.save()
+    return redirect('manage_feedback')
+
+
+from django.conf import settings
+
+def payment(request):
+    total = request.GET.get('total')
+    user = UserProfile.objects.get(user=request.user)
+    from django.conf import settings
+    context = {
+        'total': total,
+        'user': user,  
+        'PAYSTACK_PUBLIC_KEY': settings.PAYSTACK_PUBLIC_KEY,
+    }
+    return render(request, "payment.html", context)
+import requests
+from django.conf import settings
+from django.http import HttpResponse
+
+def verify_payment(request):
+    reference = request.GET.get('reference')
+    headers = {
+        "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
+    }
+    url = f"https://api.paystack.co/transaction/verify/{reference}"
+    resp = requests.get(url, headers=headers)
+    result = resp.json()
+    if result['data']['status'] == 'success':
+        user = request.user
+        cart = Cart.objects.get(user=user)
+        total = request.GET.get('total')
+        Booking.objects.create(user=user, product=cart.product, total=total)
+        cart.product = {'objects': []}
+        cart.save()
+        messages.success(request, "Payment successful! Order booked.")
+        return redirect('myorder')  # Redirect to your order page
+    else:
+        messages.error(request, "Payment failed or not verified.")
+        return redirect('cart') 
+    
+def manage_order(request):
+    action = request.GET.get('action', 0)
+    order = Booking.objects.filter(status=int(action))
+    order_status = ORDERSTATUS[int(action)-1][1]
+    if int(action) == 0:
+        order = Booking.objects.filter()
+        order_status = 'All'
+    return render(request, 'manage_order.html', locals()) 
+
+def delete_order(request, pid):
+    order = Booking.objects.get(id=pid)
+    order.delete()
+    messages.success(request, 'Order Deleted')
+    return redirect('/manage-order/?action='+request.GET.get('action'))
+
+def admin_order_track(request, pid):
+    order = Booking.objects.get(id=pid)
+    orderstatus = ORDERSTATUS
+    status = int(request.GET.get('status',0))
+    if status:
+        order.status = status
+        order.save()
+        return redirect('admin_order_track', pid)
+    return render(request, 'admin-order-track.html', locals())
+
+def manage_user(request):
+    user = UserProfile.objects.all()
+    return render(request, 'manage_user.html', locals()) 
+
+def delete_user(request, pid):
+    try:
+        user = User.objects.get(id=pid)
+        try:
+            userprofile = UserProfile.objects.get(user=user)
+            userprofile.delete()
+        except UserProfile.DoesNotExist:
+            pass  # It's ok if the profile is already gone
+        user.delete()
+        messages.success(request, "User deleted successfully")
+    except User.DoesNotExist:
+        messages.error(request, "User does not exist or was already deleted.")
+    return redirect('manage_user')
+
+def admin_change_password(request):
+    if request.method == 'POST':
+        o = request.POST.get('currentpassword')
+        n = request.POST.get('newpassword')
+        c = request.POST.get('confirmpassword')
+        user = authenticate(username=request.user.username, password=o)
+        if user:
+            if n == c:
+                user.set_password(n)
+                user.save()
+                messages.success(request, "Password Changed")
+                return redirect('admin_login')
+            else:
+                messages.success(request, "Password not matching")
+                return redirect('admin_change_password')
+        else:
+            messages.success(request, "Invalid Password")
+            return redirect('admin_change_password')
+    return render(request, 'admin_change_password.html')

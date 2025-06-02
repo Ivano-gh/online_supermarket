@@ -4,10 +4,17 @@
   <title>Admin Login</title>
   <style>
     body#login {
-      background-image: url("{% static 'images/online3.jpg' %}");
+      background-image: url("{% static 'images/oneline3.jpg' %}");
       background-size: cover;
       background-repeat: no-repeat;
       background-attachment: fixed;
+      max-width: 100%; /* Ensures images don't exceed their container's width */
+  height: auto; /* Maintains the aspect ratio */
+  display: block; /* Prevents inline image alignment issues */
+  margin: 0 auto;
+  object-fit: cover;
+  width: 100%; /* Centers images inside containers */
+
     }
   </style>
 </head>
@@ -18,7 +25,7 @@
   <div class="col-lg-5 m-auto">
     <div class="card mt-5 bg-dark">
       <div class="card-title text-center mt-3">
-          <img src="{% static 'images/useravatar.png' %}" width="150" height="150" alt="User Avatar">
+          <img src="{% static 'images/adminlogo.png' %}" width="150" height="150" alt="User Avatar">
           <h2 class="text-white">Admin Login</h2>
       </div>
       <div class="card-body">

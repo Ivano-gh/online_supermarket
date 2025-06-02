@@ -1,0 +1,42 @@
+{% extends 'admin_base.html' %}
+{% block main  %}
+
+<div class="card shadow">
+    <div class="card-body">
+
+        <h5 class="p-2" style="border-bottom: 2px solid orange;">View Feedback</h5>
+        <div class="container-fluid">
+
+            <table class="table table-bordered table-sm" id="example">
+                <thead>
+                <tr>
+                    <th>S.No.</th>
+                    <th>User</th>
+                    <th>Comment</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for i in feedback %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.user }}</td>
+                    <td>{{ i.message }}</td>
+                    <td>
+                        <a href="{% url 'delete_feedback' i.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        {% if i.status == 2 %}
+                            <a href="{% url 'mark_feedback_read' i.id %}" class="btn btn-info btn-sm">Mark as Read</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No feedback found.</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
