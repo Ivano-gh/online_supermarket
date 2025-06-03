@@ -325,7 +325,12 @@ def deletecart(request, pid):
 
 @login_required
 def booking(request):
-    user = UserProfile.objects.get(user=request.user)
+    try:
+        user = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist:
+        messages.error(request, "User profile not found.")
+        return redirect('main')
+
     try:
         cart = Cart.objects.get(user=request.user)
         product_data = (cart.product).replace("'", '"')
@@ -340,22 +345,35 @@ def booking(request):
         return redirect('cart')
 
     total = 0
+    discounted = 0
+    deduction = 0
+
     for i, j in productid.items():
         try:
             product = Product.objects.get(id=i)
-            # Remove any currency symbols and convert to float
+            # Clean price and discount
             price_str = str(product.price).replace('$', '').replace('Ghc.', '').replace('Rs.', '').replace('€', '').strip()
-            total += float(j) * float(price_str)
-        except Product.DoesNotExist:
+            discount_str = str(product.discount).replace('%', '').strip()
+            price = float(price_str)
+            discount = float(discount_str)
+            qty = int(j)
+            total += qty * price
+            discounted_price = price * (100 - discount) / 100
+            discounted += qty * discounted_price
+        except (Product.DoesNotExist, ValueError, TypeError):
             continue
 
+    deduction = total - discounted
+
     if request.method == "POST":
-        return redirect(f'/payment/?total={total}')
+        return redirect(f'/payment/?total={total}&discounted={discounted}&deduction={deduction}')
 
     return render(request, "booking.html", {
         "user": user,
         "cart": cart,
         "total": total,
+        "discounted": discounted,
+        "deduction": deduction,
         "productid": productid,
     })
 
@@ -504,3 +522,7 @@ def admin_change_password(request):
             messages.success(request, "Invalid Password")
             return redirect('admin_change_password')
     return render(request, 'admin_change_password.html')
+
+def home_products(request):
+    products = Product.objects.all()
+    return render(request, 'home_products.html', {'products': products})

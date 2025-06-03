@@ -1,3 +1,4 @@
+{% load custom_tags %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -5,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Online Shopping Supermarket</title>
+    <title>Products - Online Shopping Supermarket</title>
     <link rel="icon" href="{% static 'images/oneline2.png' %}">
     
     <!-- Bootstrap CSS -->
@@ -28,28 +29,64 @@
     <link rel="stylesheet" href="{% static 'css/mystyle.css' %}">
     
     <style>
+        /* ===========================================
+           BASE STYLES
+        =========================================== */
         body {
             font-family: 'Ubuntu', sans-serif;
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
         }
         
+        /* ===========================================
+           NAVIGATION STYLES
+        =========================================== */
         .navbar-brand {
             font-weight: bold;
             font-size: 1.5rem;
+        }
+        
+        .navbar-custom {
+            background-color: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #007bff !important;
+        }
+        
+        /* ===========================================
+           SIDEBAR STYLES
+        =========================================== */
+        #wrapper {
+            min-height: calc(100vh - 80px);
         }
         
         #sidebar-wrapper {
             min-height: 100vh;
             margin-left: -15rem;
             transition: margin 0.25s ease-out;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            border-radius: 0 15px 15px 0;
         }
         
         #sidebar-wrapper .sidebar-heading {
-            padding: 0.875rem 1.25rem;
+            padding: 1.5rem 1.25rem;
             font-size: 1.2rem;
             font-weight: bold;
-            background-color: #007bff;
+            background: linear-gradient(135deg, #007bff, #0056b3);
             color: white;
+            border-radius: 0 15px 0 0;
         }
         
         #wrapper.toggled #sidebar-wrapper {
@@ -59,70 +96,266 @@
         #page-content-wrapper {
             min-width: 0;
             width: 100%;
+            background: transparent;
         }
         
+        .list-group-item {
+            border: none;
+            border-radius: 0;
+            padding: 1rem 1.25rem;
+            transition: all 0.3s ease;
+            background: transparent;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .list-group-item:hover,
+        .list-group-item.active {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+        }
+        
+        .list-group-item i {
+            margin-right: 0.75rem;
+            width: 20px;
+        }
+        
+        /* ===========================================
+           TOP NAVIGATION BAR
+        =========================================== */
+        .top-nav {
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        #menu-toggle {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        #menu-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,123,255,0.3);
+        }
+        
+        /* ===========================================
+           SEARCH SECTION
+        =========================================== */
+        .search-section {
+            background: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .search-box {
+            border-radius: 25px;
+            border: 2px solid #e9ecef;
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .search-box:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+            background: white;
+        }
+        
+        /* ===========================================
+           PRODUCT CARD STYLES
+        =========================================== */
         .product-card {
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            border: 1px solid #e9ecef;
-            margin-bottom: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
         }
         
         .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .product-image-container {
+            position: relative;
+            overflow: hidden;
+            height: 220px;
+            background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
         }
         
         .product-image {
-            height: 200px;
-            object-fit: cover;
+            height: 100%;
             width: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        
+        .product-card:hover .product-image {
+            transform: scale(1.1);
+        }
+        
+        .discount-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            z-index: 10;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            height: auto;
         }
         
         .card-title {
             color: #333;
             font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-clamp: 2; /* standard property for compatibility */
         }
         
-        .price {
-            color: #28a745;
+        .price-section {
+            margin-bottom: 1rem;
+        }
+        
+        .current-price {
+            color: #27ae60;
             font-weight: bold;
+            font-size: 1.3rem;
         }
         
+        .original-price {
+            color: #7f8c8d;
+            text-decoration: line-through;
+            font-size: 1rem;
+            margin-left: 0.5rem;
+        }
+        
+        .card-text {
+            color: #6c757d;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+        
+        /* ===========================================
+           BUTTON STYLES
+        =========================================== */
+        .btn-action {
+            border-radius: 25px;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .btn-action::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-action:hover::before {
+            left: 100%;
+        }
+        
+        .btn-cart {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            border: none;
+            color: white;
+        }
+        
+        .btn-cart:hover {
+            background: linear-gradient(135deg, #20c997, #17a2b8);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+            color: white;
+        }
+        
+        .btn-details {
+            background: linear-gradient(135deg, #ffc107, #fd7e14);
+            border: none;
+            color: white;
+        }
+        
+        .btn-details:hover {
+            background: linear-gradient(135deg, #fd7e14, #dc3545);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 193, 7, 0.3);
+            color: white;
+        }
+        
+        /* ===========================================
+           EMPTY STATE STYLES
+        =========================================== */
         .empty-state {
             text-align: center;
-            padding: 3rem;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin: 2rem 0;
         }
         
         .empty-state img {
             max-width: 300px;
             opacity: 0.7;
+            margin-bottom: 2rem;
         }
         
-        .category-header {
-            background: linear-gradient(135deg, #007bff, #0056b3);
-            color: white;
-            padding: 1rem;
-            border-radius: 0.25rem;
-            margin-bottom: 1.5rem;
+        .empty-state h4 {
+            color: #7f8c8d;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
         }
         
-        .list-group-item.active {
-            background-color: #007bff;
-            border-color: #007bff;
+        .empty-state p {
+            color: #95a5a6;
+            margin-bottom: 2rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
-        .btn-add-cart {
-            background-color: #28a745;
-            border-color: #28a745;
-            transition: all 0.2s ease-in-out;
-        }
-        
-        .btn-add-cart:hover {
-            background-color: #218838;
-            border-color: #1e7e34;
-            transform: translateY(-1px);
-        }
-        
+        /* ===========================================
+           RESPONSIVE STYLES
+        =========================================== */
         @media (min-width: 768px) {
             #sidebar-wrapper {
                 margin-left: 0;
@@ -133,15 +366,56 @@
             }
         }
         
-        .navbar-custom {
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            padding: 1rem 0;
+        @media (max-width: 767px) {
+            .search-section {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .container-fluid {
+                padding: 0 1rem;
+            }
+            
+            .product-card {
+                margin-bottom: 1.5rem;
+            }
+            
+            .card-body {
+                padding: 1rem;
+            }
         }
         
-        .filter-sidebar {
-            background-color: white;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        /* ===========================================
+           LOADING ANIMATION
+        =========================================== */
+        .loading-spinner {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* ===========================================
+           FADE IN ANIMATION
+        =========================================== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
@@ -162,49 +436,44 @@
             
             <div class="collapse navbar-collapse" id="myMenu">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        
+                    <li class="nav-item"><a href="/user-feedback/" class="nav-link">📝 Feedback</a></li>
+                    <li class="nav-item"><a href="/my-order/" class="nav-link">📋 My Order</a></li>
+                    <li class="nav-item"><a href="/cart/" class="nav-link">🛒 My Cart</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            <img src="{% static 'images/adminlogo.png' %}"
+                                 style="width:40px;height:40px;border-radius:50%"/>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'profile' %}">👤 Profile</a>
+                            <a class="dropdown-item" href="/change-password/">🔒 Change Password</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/logout/">🚪 Logout</a>
+                        </div>
                     </li>
-                     <li class="nav-item"><a href="/user-feedback/" class="nav-link">Feedback</a></li>
-                     <li class="nav-item"><a href="/my-order/" class="nav-link">My Order</a></li>
-                 <li class="nav-item"><a href="/cart/" class="nav-link">My Cart</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link " href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
-                        <img src="{% static 'images/adminlogo.png' %}"
-                             style="width:40px;height:40px;border-radius:50%"/>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
-                        <a class="dropdown-item" href="/change-password/">Change Password</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/logout/">Logout</a>
-                    </div>
-                </li>
-                    
                 </ul>
             </div>
         </div>
     </nav>
     
-{% block content %}
     <!-- Main Content Wrapper -->
     <div class="d-flex" id="wrapper">
         <!-- Sidebar -->
         <div class="filter-sidebar border-right" id="sidebar-wrapper">
             <div class="sidebar-heading">
-                <i class="fas fa-filter"></i> Start Filtering
+                <i class="fas fa-filter"></i> Filter Products
             </div>
             
             <div class="list-group list-group-flush">
                 <a href="{% url 'user_product' 0 %}" 
-                   class="list-group-item list-group-item-action bg-light">
+                   class="list-group-item list-group-item-action">
                     <i class="fas fa-th-large"></i> All Products
                 </a>
                 
                 {% for i in allcategory %}
                 <a href="{% url 'user_product' i.id %}" 
-                   class="list-group-item list-group-item-action bg-light">
+                   class="list-group-item list-group-item-action">
                     <i class="fas fa-tag"></i> {{i.name}}
                 </a>
                 {% endfor %}
@@ -214,66 +483,114 @@
         <!-- Page Content -->
         <div id="page-content-wrapper">
             <!-- Top Navigation Bar -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                <button class="btn btn-primary" id="menu-toggle">
-                    <i class="fa fa-bars"></i>
-                </button>
-                
-                <!-- Removed the eye icon and category header div -->
+            <nav class="navbar navbar-expand-lg navbar-light top-nav">
+                <div class="container-fluid">
+                    <button class="btn btn-primary" id="menu-toggle">
+                        <i class="fa fa-bars"></i> Categories
+                    </button>
+                    
+                    <div class="ml-auto">
+                        <span class="text-muted">
+                            <i class="fas fa-box"></i> 
+                            {% if product %}{{ product|length }}{% else %}0{% endif %} Products Found
+                        </span>
+                    </div>
+                </div>
             </nav>
 
             <!-- Search Bar -->
-            <div class="container mt-3">
-    <div class="row">
-        <div class="col-md-6 mx-auto">
-            <input type="text" id="productSearch" class="form-control" placeholder="Search products...">
-        </div>
-    </div>
-</div>
+            <div class="search-section">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8 mx-auto">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-primary text-white">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                </div>
+                                <input type="text" id="productSearch" class="form-control search-box" 
+                                       placeholder="Search products by name or description...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Products Section -->
-            <div class="container-fluid mt-4">
+            <div class="container-fluid">
                 <div class="row">
                     {% for j in product %}
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 product-item">
+                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4 product-item fade-in" 
+                         style="animation-delay:  {{ forloop.counter0|add:1|add:'0' }}00ms">
                         <div class="card product-card h-100">
-                            <img class="card-img-top product-image" 
-                                 src="{{j.image.url}}" 
-                                 alt="{{j.name}}"
-                                 loading="lazy">
+                            <!-- Product Image -->
+                            <div class="product-image-container">
+                                <img class="product-image" 
+                                     src="{{j.image.url}}" 
+                                     alt="{{j.name}}"
+                                     loading="lazy">
+                                
+                                <!-- Discount Badge (if applicable) -->
+                                {% if j.discount %}
+                                <div class="discount-badge">
+                                    SALE
+                                </div>
+                                {% endif %}
+                            </div>
                             
-                            <div class="card-body d-flex flex-column">
+                            <!-- Product Details -->
+                            <div class="card-body">
+                                <!-- Product Title -->
                                 <h6 class="card-title">{{j.name}}</h6>
-                                <p class="price h5 mb-2">Ghc.{{j.price}}</p>
-                                <p class="card-text text-muted small flex-grow-1">
-                                    {{j.description}}
+                                
+                                <!-- Price Section -->
+                                <div class="price-section">
+                                    <span class="current-price">
+                                        Ghc. {{j.id|applydiscount}}
+                                    </span>
+                                    {% if j.price != j.id|applydiscount %}
+                                    <span class="original-price">
+                                        Ghc. {{j.price}}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                                
+                                <!-- Product Description -->
+                                <p class="card-text">
+                                    {{j.description|truncatewords:15}}
                                 </p>
                                 
-                                <a href="/add-to-cart/{{j.id}}/" class="btn btn-primary">
-  <i class="fa fa-shopping-cart"></i> Add to cart
-</a>
-<a href="/product-detail/{{j.id}}/" class="btn btn-warning">
-  <i class="fa fa-info" style="font-size:22px"></i>
-</a>
- 
+                                <!-- Action Buttons -->
+                                <div class="mt-auto">
+                                    <a href="/add-to-cart/{{j.id}}/" 
+                                       class="btn btn-cart btn-action btn-block"
+                                       onclick="addToCartAnimation(this, event)">
+                                        <i class="fa fa-shopping-cart"></i> Add to Cart
+                                    </a>
+                                    <a href="/product-detail/{{j.id}}/" 
+                                       class="btn btn-details btn-action btn-block">
+                                        <i class="fa fa-info-circle"></i> View Details
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                     {% empty %}
+                    <!-- Empty State -->
                     <div class="col-12">
-                        <div class="card">
-                            <div class="card-body empty-state">
-                                <img src="{% static 'images/empty.jpg' %}" 
-                                     alt="No products found" 
-                                     class="img-fluid mb-3" />
-                                <h4 class="text-muted">No Products Found</h4>
-                                <p class="text-muted">
-                                    Sorry, there are no products available in this category at the moment.
-                                </p>
-                                <a href="{% url 'user_product' 0 %}" class="btn btn-primary">
-                                    <i class="fas fa-arrow-left"></i> View All Products
-                                </a>
-                            </div>
+                        <div class="empty-state">
+                            <img src="{% static 'images/empty.jpg' %}" 
+                                 alt="No products found" 
+                                 class="img-fluid" />
+                            <h4>No Products Found</h4>
+                            <p>
+                                Sorry, there are no products available in this category at the moment.
+                                Try browsing other categories or check back later.
+                            </p>
+                            <a href="{% url 'user_product' 0 %}" class="btn btn-primary btn-action">
+                                <i class="fas fa-arrow-left"></i> View All Products
+                            </a>
                         </div>
                     </div>
                     {% endfor %}
@@ -281,9 +598,8 @@
             </div>
         </div>
     </div>
-{% endblock %}
+
     <!-- JavaScript Libraries -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
             crossorigin="anonymous"></script>
@@ -303,33 +619,47 @@
                 $("#wrapper").toggleClass("toggled");
             });
 
-            // Add smooth scrolling
-            $('a[href^="#"]').on('click', function(event) {
-                var target = $(this.getAttribute('href'));
-                if( target.length ) {
-                    event.preventDefault();
-                    $('html, body').stop().animate({
-                        scrollTop: target.offset().top
-                    }, 1000);
-                }
+            // Product search filter
+            $('#productSearch').on('keyup', function() {
+                var searchValue = $(this).val().toLowerCase();
+                $('.product-item').each(function() {
+                    var text = $(this).text().toLowerCase();
+                    $(this).toggle(text.includes(searchValue));
+                });
+                
+                // Update product count
+                var visibleProducts = $('.product-item:visible').length;
+                $('.text-muted').html('<i class="fas fa-box"></i> ' + visibleProducts + ' Products Found');
             });
 
-            // Add loading animation to buttons
-            $('.btn-add-cart').on('click', function() {
-                var $btn = $(this);
+            // Add to cart animation
+            window.addToCartAnimation = function(button, event) {
+                event.preventDefault();
+                var $btn = $(button);
                 var originalText = $btn.html();
                 
-                $btn.html('<i class="fas fa-spinner fa-spin"></i> Adding...');
+                $btn.html('<span class="loading-spinner"></span> Adding...');
                 $btn.prop('disabled', true);
                 
                 // Simulate API call
                 setTimeout(function() {
                     $btn.html('<i class="fas fa-check"></i> Added!');
                     setTimeout(function() {
-                        $btn.html(originalText);
-                        $btn.prop('disabled', false);
+                        // Redirect to the actual URL
+                        window.location.href = $btn.attr('href');
                     }, 1000);
                 }, 1000);
+            };
+
+            // Add smooth scrolling
+            $('a[href^="#"]').on('click', function(event) {
+                var target = $(this.getAttribute('href'));
+                if(target.length) {
+                    event.preventDefault();
+                    $('html, body').stop().animate({
+                        scrollTop: target.offset().top - 100
+                    }, 1000);
+                }
             });
 
             // Add animation to cards on scroll
@@ -345,16 +675,25 @@
                     }
                 });
             });
-        });
 
-        // Product search filter
-    document.getElementById('productSearch').addEventListener('keyup', function() {
-        var searchValue = this.value.toLowerCase();
-        document.querySelectorAll('.product-item').forEach(function(card) {
-            var text = card.textContent.toLowerCase();
-            card.style.display = text.includes(searchValue) ? '' : 'none';
+            // Close sidebar when clicking outside on mobile
+            $(document).on('click', function(event) {
+                if ($(window).width() < 768) {
+                    if (!$(event.target).closest('#sidebar-wrapper, #menu-toggle').length) {
+                        $('#wrapper').removeClass('toggled');
+                    }
+                }
+            });
+
+            // Auto-close sidebar on mobile after category selection
+            $('.list-group-item').on('click', function() {
+                if ($(window).width() < 768) {
+                    setTimeout(function() {
+                        $('#wrapper').removeClass('toggled');
+                    }, 300);
+                }
+            });
         });
-    });
     </script>
 </body>
 </html>

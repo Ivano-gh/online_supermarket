@@ -8,13 +8,13 @@ register = template.Library()
 def applydiscount(pid):
     try:
         data = Product.objects.get(id=pid)
-        price_str = str(data.price).replace('$', '').replace('Ghc.', '').replace('Rs.', '').strip()
+        price_str = str(data.price).replace('$', '').replace('Ghc.', '').replace('Rs.', '').replace('€', '').strip()
         discount_str = str(data.discount).replace('%', '').strip()
         price = float(price_str)
         discount = float(discount_str)
         discounted_price = price * (100 - discount) / 100
         return round(discounted_price, 2)
-    except (Product.DoesNotExist, ValueError):
+    except (Product.DoesNotExist, ValueError, TypeError):
         return 0
 
 @register.filter()
@@ -46,10 +46,13 @@ def producttotalprice(pid, qty):
     try:
         data = Product.objects.get(id=pid)
         price_str = str(data.price).replace('$', '').replace('Ghc.', '').replace('Rs.', '').replace('€', '').strip()
+        discount_str = str(data.discount).replace('%', '').strip()
         price = float(price_str)
+        discount = float(discount_str)
+        discounted_price = price * (100 - discount) / 100
         qty = int(qty)
-        return round(price * qty, 2)
-    except (Product.DoesNotExist, ValueError):
+        return round(discounted_price * qty, 2)
+    except (Product.DoesNotExist, ValueError, TypeError):
         return 0
 
 @register.filter()

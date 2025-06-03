@@ -66,6 +66,7 @@ urlpatterns = [
     path('admin-change-password/',admin_change_password, name="admin_change_password"),
     path('mark-feedback-read/<int:pid>/', mark_feedback_read, name='mark_feedback_read'),
     path('contact/', contact, name="contact"),
+    path('products/', home_products, name='home_products'),
     
 ]
 

@@ -1,5 +1,6 @@
 <html>
 {% load static %}
+{% load custom_tags %}
 <head>
     <title>Payment Page|Online Grocery</title>
     <link rel="stylesheet" href="{% static 'css/payment.css' %}"/>
@@ -54,11 +55,11 @@
           <hr />
           <div class="price">
             <p>Order price:</p>
-            <p>Ghc.{{total}}</p>
+           <p>Ghc.{{request.GET.total|floatformat:2}}</p>
           </div>
           <div class="price">
-            <p>Shipping:</p>
-            <p>0.00</p>
+            <p>Applied Discount:</p>
+    <p>Ghc.{{request.GET.deduction|floatformat:2}}</p>
           </div>
           <div class="price">
             <p>Tax:</p>
@@ -68,7 +69,7 @@
           <hr />
           <div class="total_price">
             <p class="dark">Total:</p>
-            <p class="dark">Ghc. {{total}}</p>
+            <p class="dark">Ghc.{{request.GET.discounted|floatformat:2}}</p>
           </div>
         </div>
         <img class="qr_code" src="https://cdn-icons-png.flaticon.com/512/714/714390.png" alt="" />
