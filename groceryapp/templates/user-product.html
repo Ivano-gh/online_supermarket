@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Products - Online Shopping Supermarket</title>
+    <title>Products - Ivanos Shopping Supermarket</title>
     <link rel="icon" href="{% static 'images/oneline2.png' %}">
     
     <!-- Bootstrap CSS -->
@@ -425,7 +425,7 @@
     <nav class="navbar navbar-expand-sm navbar-light navbar-custom">
         <div class="container-fluid">
             <a href="#" class="navbar-brand">
-                <span style="color:red">Online</span>
+                <span style="color:red">Ivanos</span>
                 <span style="color:green">Shopping</span>
                 <span style="color:blue">Supermarket</span>
             </a>
@@ -436,9 +436,9 @@
             
             <div class="collapse navbar-collapse" id="myMenu">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a href="/user-feedback/" class="nav-link">📝 Feedback</a></li>
-                    <li class="nav-item"><a href="/my-order/" class="nav-link">📋 My Order</a></li>
-                    <li class="nav-item"><a href="/cart/" class="nav-link">🛒 My Cart</a></li>
+                    <li class="nav-item"><a href="/user-feedback/" class="nav-link"> Feedback</a></li>
+                    <li class="nav-item"><a href="/my-order/" class="nav-link"> My Order</a></li>
+                    <li class="nav-item"><a href="/cart/" class="nav-link"> My Cart</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
@@ -446,10 +446,10 @@
                                  style="width:40px;height:40px;border-radius:50%"/>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{% url 'profile' %}">👤 Profile</a>
-                            <a class="dropdown-item" href="/change-password/">🔒 Change Password</a>
+                            <a class="dropdown-item" href="{% url 'profile' %}"> Profile</a>
+                            <a class="dropdown-item" href="/change-password/"> Change Password</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/logout/">🚪 Logout</a>
+                            <a class="dropdown-item" href="/logout/"> Logout</a>
                         </div>
                     </li>
                 </ul>
@@ -534,8 +534,9 @@
                                 <!-- Discount Badge (if applicable) -->
                                 {% if j.discount %}
                                 <div class="discount-badge">
-                                    SALE
+                                    Sale
                                 </div>
+                                
                                 {% endif %}
                             </div>
                             

@@ -65,17 +65,17 @@
                                                 <img src="{% static 'default-product.png' %}" style="width:100%;height:80px;">
                                             {% endif %}
                                           </th>
-                                      </tr>a
+                                      </tr>
                                       <tr>
                                           <th>Quantity</th>
                                           <td>{% get_qty j.id i.id %}</td>
                                           <th>Price(per unit)</th>
-                                          <td>Ghc. {{j.price}}</td>
+                                          <td>Ghc. {{j.id|applydiscount}}</td>
                                       </tr>
                                     {% endfor %}
                                       <tr>
                                         <th>Total Price</th>
-                                        <td>Ghc. {{i.total}}</td>
+                                        <td>Ghc.{{i.total|floatformat:2}}</td>
                                         <th>Booking Date</th>
                                         <td>{{i.created}}</td>
                                       </tr>

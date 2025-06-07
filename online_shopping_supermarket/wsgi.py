@@ -14,3 +14,5 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'online_shopping_supermarket.settings')
 
 application = get_wsgi_application()
+
+app = application  # For compatibility with some WSGI servers that expect 'app' to be the callable
