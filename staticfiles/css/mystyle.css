@@ -1,0 +1,90 @@
+/* Change Brand Font */
+.navbar-brand{
+  font-family: 'Monotype Corsiva';
+  font-size: 35px;
+  font-weight: bold;
+}
+/* Change Navigation Color */
+.nav-link,.dropdown-item{
+  color: black !important;
+  font-size : 20px
+}
+.nav-link:hover{
+  color: green !important;
+  background-color : orange;
+  border-radius : 30px;
+}
+
+/* Change Footer Social Icon Color */
+#footer a,#contact a{
+  color:  #EE1D29;
+}
+#footer a:hover {
+  color: yellow;
+}
+
+#contact a:hover {
+  color: blue;
+}
+
+
+/*scroll button start*/
+#scrollbtn
+{
+
+position:fixed;
+bottom:20px;
+right:40px;
+z-index:99;
+border:none;
+color:red;
+background:#00abff;
+padding:10px;
+border-radius:10px;
+}
+/*scroll button end*/
+
+html{
+scroll-behavior:smooth;
+}
+
+#login
+{
+background-size : 100%;
+background-position : 0px 80px;
+background-repeat : no-repeat;
+opacity : 0.8
+}
+
+#signupform{
+background : url('/static/images/oneline2.jpg');
+color : white;
+}
+
+/* General Image Styling */
+img {
+  max-width: 100%; /* Ensures images don't exceed their container's width */
+  height: auto; /* Maintains the aspect ratio */
+  display: block; /* Prevents inline image alignment issues */
+  margin: 0 auto;
+  object-fit: cover;
+  width: 100%; /* Centers images inside containers */
+}
+
+ body {
+        background: #f8f9fa;
+    }
+    .change-password-card {
+    max-width: 700px; /* or 800px */
+    margin: 60px auto 0 auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    background: #fff;
+    padding: 40px 32px;
+}
+    .change-title {
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
+        margin-bottom: 25px;
+    }
+
