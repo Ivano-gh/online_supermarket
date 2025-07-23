@@ -43,29 +43,23 @@
 <link rel="icon" href="{% static 'images/oneline2.png' %}">
 <title>Ivanos Shopping Supermarket</title>
 <!-- Start Nagigation -->
-<nav class="navbar navbar-expand-sm navbar-light">
+<nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
         <a href="#" class="navbar-brand">
-            &nbsp;<span style="color:red">Ivanos</span>
+            <span style="color:red">Ivanos</span>
             <span style="color:green">Shopping</span>
-            <span style="color:blue">Supermarket</span></a>
-        <!--<span class="navbar-text blinking">Enjoy Programming</span>-->
-        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#myMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse text-center" id="myMenu">
-            <ul class="navbar-nav pl-5 custom-nav ml-auto">
-                {% block content %}
-                <li class="nav-item"><a href="/main/" class="nav-link"><i class="fas fa-home"></i>
-                            Home</a></li>
-                <li class="nav-item"><a href="{% url 'home_products' %}" class="nav-link">Product</a></li>
-                
-                <li class="nav-item"><a href="/about/" class="nav-link">About Us</a></li>
-                 <li class="nav-item"><a href="/contact/" class="nav-link">Contact Us</a></li>
-                <li class="nav-item"><a href="{% url 'userlogin' %}" class="nav-link">Login</a></li>
-                <li class="nav-item"><a href="{% url 'registration' %}" class="nav-link">Signup</a></li>
-                <li class="nav-item"><a href="{% url 'admin_login' %}" class="nav-link">Admin Login</a></li>
-                    
+            <span style="color:blue">Supermarket</span> 
+        </a>
+        <ul class="navbar-nav d-flex flex-row ml-auto">
+            <li class="nav-item mx-2"><a href="/main/" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+            <li class="nav-item mx-2"><a href="{% url 'home_products' %}" class="nav-link">Product</a></li>
+            <li class="nav-item mx-2"><a href="/about/" class="nav-link">About Us</a></li>
+            <li class="nav-item mx-2"><a href="/contact/" class="nav-link">Contact Us</a></li>
+            <li class="nav-item mx-2"><a href="{% url 'userlogin' %}" class="nav-link">Login</a></li>
+            <li class="nav-item mx-2"><a href="{% url 'registration' %}" class="nav-link">Signup</a></li>
+            <li class="nav-item mx-2"><a href="{% url 'admin_login' %}" class="nav-link">Admin Login</a></li>
+        </ul>
+    </div>
 </nav> <!-- End Navigation -->
 {% endblock %}
 
