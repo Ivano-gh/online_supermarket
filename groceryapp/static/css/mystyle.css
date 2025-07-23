@@ -88,3 +88,6 @@ img {
         margin-bottom: 25px;
     }
 
+.navbar-nav {
+    flex-direction: row !important;
+}
